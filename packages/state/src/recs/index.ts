@@ -478,7 +478,7 @@ const getCache = (timestampCacheKey: string) => {
     return Number(localStorage.getItem(timestampCacheKey) || 0);
 };
 
-async function insertEntitiesInDB(
+export async function insertEntitiesInDB(
     db: IDBDatabase,
     entities: Entities
 ): Promise<void> {
@@ -486,7 +486,6 @@ async function insertEntitiesInDB(
         const transaction = db.transaction(["entities"], "readwrite");
         const store = transaction.objectStore("entities");
 
-        let completed = 0;
         let error: Error | null = null;
 
         // Handle transaction completion
@@ -510,7 +509,6 @@ async function insertEntitiesInDB(
             };
 
             const request = store.put(entityData);
-            completed++;
 
             request.onerror = () => {
                 error = request.error;
